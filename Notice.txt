@@ -1,4 +1,4 @@
-------------------------------------- SIMPLE DYNAMIC ASTARS PATHFINDING -------------------------------------
+------------------------------------- SIMPLE DYNAMIC ASTARS ALGORYTHME -------------------------------------
 -------------------------------------------------------------------------------------------------------------
 #-#-#-#-#- Description -#-#-#-#-#:
 Cette Librairie permet de calculer le plus court chemin d'un point A a un point B en tenant compte d'eventuelle case
