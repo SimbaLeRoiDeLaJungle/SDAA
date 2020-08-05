@@ -1,0 +1,109 @@
+------------------------------------- SIMPLE DYNAMIC ASTARS PATHFINDING -------------------------------------
+-------------------------------------------------------------------------------------------------------------
+#-#-#-#-#- Description -#-#-#-#-#:
+Cette Librairie permet de calculer le plus court chemin d'un point A a un point B en tenant compte d'eventuelle case
+sur les quelles le passages n'est pas autorisé, elle utilise l'algorithme astars.
+
+#-#-#-#-#- Utilisation -#-#-#-#-# :
+Commencons par noter l'utilisation des deux structures suivantes :
+    -VectInt ,qui a deux membres : line et col
+    -VectFloat, qui a deux membres : x et y
+
+Pour une utilisation statique seul la classe Metric suffit en partique, a sa construction elle prend 3 parametres (largeur , hauteur, taille d'une case),
+il vous suffit ensuite de passer certaine "case" en mode occuper, pour signaler a votre metric que ses cases ne sont pas accessible, c'est a dire : il faut les contourner,
+pour ce faire utilisez la methode Metric::setOccupy(int line,int col, bool isOccupy).
+finalement pour calculer le "path" il faut utiliser la methode Metric::pathfinding(VectInt const& start, VectInt const& dest), cette methode vous
+renvois un std::vector<VectInt> qui contiendras la ligne et la colone du chemin dans l'ordre (sans la case de départ)
+
+Pour une utilisation dynamique il faut utiliser la deuxieme grande classe de cette librairie : Entity , cette class permet
+de gerrer des deplacement au seins de la metric de manière dynamique, pour ce faire :
+
+(avant la boucle)
+- Créer une instance Metric comme précédament.
+- Créer une instance Entity (ou plusieurs libre à vous), qui prend comme paramètre : int line , int col , int squareSize , float velocity (note : 0<=velocity<=1)
+    la vitesse a pour unité (nombre de cases)/(nombre d'update) il vaut mieu la laisser inférieur à 1 pour avoir un rendu agréable.
+
+- Dire à votre metric que l'entité existe avec la methode Metric::addEntity(Entity& entity), de cette manière la metric va crée un pointeur vers l'entité
+
+
+(Pendant la boucle)
+- pour chaque entity utiliser la methode Entity::updateEntityPosition() les entités possède en memoire leur path qui est simplement le chemin quelle doivent suivre,
+(nous expliquerons un peu après comment le modifier), cette methode (updateEntityPosition) sert a metre a jour la position de l'entité en fonction de sont path et de sa vitesse.
+
+- utiliser la methode Metric::dynamicPathControl(bool BOTH = false), si quelque chose change dans votre metric(une case occupé) cette methode ferras les eventuelle modifications nécessaire
+du chemin de toutes les entités qui ont été ajouter a la metric. si BOTH = false alors cette methode ne gere que le cas : lorsque qu'une case passe de non-occupé à occupé, si BOTH = true,
+alors elle verifie aussi lorsque une case passe de occupé -> non-occupé, mais utiliser cette option (BOTH = true) est plus couteuse en calcul, car le path de chaque entitées seras recalculer a chaque
+modification de l'etat d'ocuupation d'une case. (remarque l'algorithme sera "fonctionnelle" sans cette étape si les case occupé ne change pas au cours des deplacement, dans ce cas vous pouvez sauter cette étape,
+mais la deuxieme methode présenté ci-dessous pour deplacer les entitées ne fonctionnera pas, à vous de juger si cette etape vous est utile ou non en fonction du projet)
+
+
+(affecter un deplacement au entités)
+- Premierement il faut a tous pris évité de modifier la position de vos entitées par vous même avec la methode Entity::setPath(std::vector<VectInt> const& path) et ses surchargement,
+il y a deux methode sur et recommender pour faire cela, la premiere est la  methode classique et est celle que vous devez privilligiez a moin d'etre contraint d'utiliser la deuxième.
+
+Premier methode : utiliser la methode Metric::setPath(Entity& entity, VectInt dest) (/!\ ne pas confondre avec Entity::setPath(std::vector<VectInt>const& path))
+    cette methode est trés simple d'utilisation on stock dans un VectInt la valeur de la ligne et de la colone vers la quelle on voudrais que l'entité se déplace, ensuite on utilise
+    la metric pour calculer et affecter le path;
+
+Deuxieme methode : cette deuxieme methode est pratique si vous voulez par exemple affecter le path dans une partie du code ou vous n'avez pas acces a la Metric
+    rien de bien compliquer non plus, premierement nottons que la class Entity contient un membre m_dest un VectInt. l'implementation serais la suivante :
+    On change le mode de l'entité avec Entity::setMode(Entity::Mode mode) en Entity::REQUESTPATH, et le membre m_dest avec la methode Entity::setDest(VectInt dest) avec la valeur de case (line, col)
+    de la destination voulue, et c'est tout. A sont prochain passage dans dynamicPathConrol notre metric va comprendre que votre entité veux se deplacer vers sa variable m_dest et va créer le path toute
+    seule et repasser votre entity en mode Entity::MOVE.
+
+(recuperer la position des entités)
+- Pour recuperer la position d'une entité il suffit d'utiliser la methode Entity::getFullPosition(), qui renvoi un VectFloat.
+- Pour recupere la position dans la metric (line, colone) il faut utiliser la methode Entity::getPositionInMetric(), qui renvoi un VectInt.
+- Pour recupere la position relative a la case de la metric (en unité de case) (-1<dx<1,-1< dy<1) il faut utiliser la methode Entity::getRelPosition(), qui renvoi un VectFloat.(pas très utile)
+
+
+
+#-#-#-#-#- Présentation des classes -#-#-#-#-# :
+
+
+#-#-#-#-#-exemple avec SFML-#-#-#-#-#
+(Nous vous laissons la partie graphique pour vous ;))
+
+
+int main()
+{
+    sf::RenderWindow app(...............)
+    sf::Mouse mouse;
+    app.setFrameRateLimit(MAX_FPS);
+
+    Metric metric(width,height,squareSize);
+
+    Entity entity(line,col,squareSize,velocity);
+
+    metric.addEntity(entity);
+
+    // mainloop
+    while(app.isOpen())
+    {
+        //check event
+        // ...
+        // ...
+
+        if(mouse.isButtonPressed(Mouse::Left))
+        {
+            int line = mouse.getPosition(app).y / squareSize;
+            int col = mouse.getPosition(app).x / squareSize;
+            VectInt dest(line,col);
+            if(metric.isIn(line,col))
+            {
+                metric.setPath(entity,dest);
+            }
+        }
+
+        //update
+        entity.updateEntityPosition();
+        metric.dynamicPathControl();
+
+        //draw
+        //...
+        //...
+    }
+    retun 0;
+}
+
+http://pub.phyks.me/sdz/sdz/c-bien-choisir-ses-structures-de-donnees.html

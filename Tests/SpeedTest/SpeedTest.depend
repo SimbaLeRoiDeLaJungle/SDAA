@@ -1,0 +1,35 @@
+# depslib dependency file v1.0
+1595421555 source:/home/gallo/Bureau/Libraries/SDAA/Tests/SpeedTest/main.cpp
+	<SFML/Graphics.hpp>
+	"Astars.h"
+	"SFML_Shape/MetricShape.h"
+	<iostream>
+	<queue>
+
+1594981026 /home/gallo/Bureau/Libraries/SDAA/Astars.h
+	"include/Structures.h"
+	"include/Metric.h"
+	"include/Entity.h"
+
+1595421623 /home/gallo/Bureau/Libraries/SDAA/include/Structures.h
+
+1595421665 /home/gallo/Bureau/Libraries/SDAA/include/Metric.h
+	<vector>
+	<memory>
+	<cfloat>
+	<queue>
+	"Entity.h"
+	"Structures.h"
+
+1595417301 /home/gallo/Bureau/Libraries/SDAA/include/Entity.h
+	"Structures.h"
+	<vector>
+
+1594981177 /home/gallo/Bureau/Libraries/SDAA/include/MetricShape.h
+	<SFML/Graphics.hpp>
+	"Metric.h"
+
+1594981177 /home/gallo/Bureau/Libraries/SDAA/include/SFML_Shape/MetricShape.h
+	<SFML/Graphics.hpp>
+	"Metric.h"
+
