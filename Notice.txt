@@ -105,5 +105,3 @@ int main()
     }
     retun 0;
 }
-
-http://pub.phyks.me/sdz/sdz/c-bien-choisir-ses-structures-de-donnees.html
