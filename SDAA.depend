@@ -1,0 +1,62 @@
+# depslib dependency file v1.0
+1594981122 source:/home/gallo/Bureau/cpp/SDAA/src/Entity/Entity.cpp
+	"Entity.h"
+	<cmath>
+	<iostream>
+
+1594889485 /home/gallo/Bureau/cpp/SDAA/include/Entity.h
+	"include/Structures.h"
+	<vector>
+
+1594740778 /home/gallo/Bureau/cpp/SDAA//include/Structures.h
+
+1595430256 source:/home/gallo/Bureau/Libraries/SDAA/src/Metric/Metric.cpp
+	"Metric.h"
+	<iostream>
+	<cmath>
+
+1595422905 /home/gallo/Bureau/Libraries/SDAA/include/Metric.h
+	<vector>
+	<memory>
+	<cfloat>
+	<queue>
+	"Entity.h"
+	"Structures.h"
+
+1595490427 /home/gallo/Bureau/Libraries/SDAA/include/Entity.h
+	"Structures.h"
+	<vector>
+
+1595422827 /home/gallo/Bureau/Libraries/SDAA/include/Structures.h
+
+1595422792 source:/home/gallo/Bureau/Libraries/SDAA/src/Metric/Metric_PathFinding.cpp
+	"Metric.h"
+	<cmath>
+	<iostream>
+
+1595422804 source:/home/gallo/Bureau/Libraries/SDAA/src/SFML_Shape/MetricShape.cpp
+	"MetricShape.h"
+
+1594981177 /home/gallo/Bureau/Libraries/SDAA/include/MetricShape.h
+	<SFML/Graphics.hpp>
+	"Metric.h"
+
+1595490402 source:/home/gallo/Bureau/Libraries/SDAA/src/Entity/Entity.cpp
+	"Entity.h"
+	<cmath>
+	<iostream>
+
+1595422926 /home/gallo/Bureau/Libraries/SDAA/include/SFML_Shape/MetricShape.h
+	<SFML/Graphics.hpp>
+	"Metric.h"
+
+1595422799 source:/home/gallo/Bureau/Libraries/SDAA/src/SFML_Shape/EntitySprite.cpp
+	"EntitySprite.h"
+
+1595422917 /home/gallo/Bureau/Libraries/SDAA/include/SFML_Shape/EntitySprite.h
+	<SFML/Graphics.hpp>
+	"Entity.h"
+
+1595420152 source:/home/gallo/Bureau/Libraries/SDAA/test.cpp
+	"Metric.h"
+
